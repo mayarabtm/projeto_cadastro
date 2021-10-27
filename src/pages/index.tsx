@@ -5,11 +5,21 @@ import Cliente from '../core/Cliente'
 export default function Home() {
 
   const clients = [
-    new Cliente('Ana',34,'1'),
-    new Cliente('Bia',35,'2'),
-    new Cliente('Carlos',40,'3'),
-    new Cliente('Daniel',30,'4'),
+    new Cliente('Ana', 34, '1'),
+    new Cliente('Bia', 35, '2'),
+    new Cliente('Carlos', 40, '3'),
+    new Cliente('Daniel', 30, '4'),
   ]
+
+  function clientSelected(client: Cliente) {
+    console.log(client.name);
+
+  }
+
+  function clientDeleted(client: Cliente) {
+    console.log(client.name);
+
+  }
   return (
     <div className={`
     flex justify-center items-center h-screen
@@ -17,7 +27,9 @@ export default function Home() {
     text-white`}>
 
       <Layout title="Cadastro de Tarefas">
-        <Table clients={clients}/>
+        <Table clients={clients}
+          clientSelected={clientSelected}
+          clientDeleted={clientDeleted} />
       </Layout>
     </div>
   )
