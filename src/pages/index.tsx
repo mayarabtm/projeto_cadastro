@@ -1,10 +1,24 @@
-import Head from 'next/head'
-import Image from 'next/image'
+import Layout from '../components/Layout'
+import Table from '../components/Table'
+import Cliente from '../core/Cliente'
 
 export default function Home() {
+
+  const clients = [
+    new Cliente('Ana',34,'1'),
+    new Cliente('Bia',35,'2'),
+    new Cliente('Carlos',40,'3'),
+    new Cliente('Daniel',30,'4'),
+  ]
   return (
-    <div className={``}>
-      <span className="text-4xl">Texto</span>
+    <div className={`
+    flex justify-center items-center h-screen
+    bg-gradient-to-r from-blue-500 to-purple-500
+    text-white`}>
+
+      <Layout title="Cadastro de Tarefas">
+        <Table clients={clients}/>
+      </Layout>
     </div>
   )
 }
