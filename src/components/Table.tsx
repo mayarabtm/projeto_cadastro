@@ -1,5 +1,4 @@
 import Cliente from "../core/Cliente";
-import Button from "./Button";
 import { IconEdition, IconTrash } from "./Icons";
 
 interface TableProps {
