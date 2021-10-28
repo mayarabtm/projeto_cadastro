@@ -1,3 +1,4 @@
+import Button from '../components/Button';
 import Layout from '../components/Layout'
 import Table from '../components/Table'
 import Cliente from '../core/Cliente'
@@ -27,6 +28,9 @@ export default function Home() {
     text-white`}>
 
       <Layout title="Cadastro de Tarefas">
+        <div className="flex justify-end">
+          <Button color="green" className="mb-4"> Novo cliente </Button>
+        </div>
         <Table clients={clients}
           clientSelected={clientSelected}
           clientDeleted={clientDeleted} />

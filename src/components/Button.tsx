@@ -1,16 +1,21 @@
-export default function Button(props) {
+
+interface ButtonProps {
+    color?: 'green' | 'blue' | 'gray'
+    className?: string
+    children: any
+
+}
+
+export default function Button(props: ButtonProps) {
+    const color = props.color ?? 'gray'
     return (
         <>
-            {/* <button onClick={() => props.clientSelected?.(client)} className={`flex justify-center items-center
-                text-green-600 rounded-full hover:bg-purple-50 p-2 m-1
+            <button className={`bg-gradient-to-r from-${color}-400 to-${color}-700
+                text-white px-4 py-2 rounded-md
+                ${props.className}
                 `}>
-                {IconEdition}
+                {props.children}
             </button>
-            <button onClick={() => props.clientDeleted?.(client)} className={`flex justify-center items-center
-                text-red-500 rounded-full hover:bg-purple-50 p-2 m-1
-                `}>
-                {IconTrash}
-            </button> */}
         </>
     )
 }
