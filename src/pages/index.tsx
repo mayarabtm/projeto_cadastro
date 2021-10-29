@@ -1,42 +1,50 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import CollectionClient from '../backend/db/CollectionClient';
 import Button from '../components/Button';
 import Form from '../components/Form';
 import Layout from '../components/Layout'
 import Table from '../components/Table'
 import Cliente from '../core/Cliente'
+import ClientRepository from '../core/ClientRepository';
 
 export default function Home() {
 
+  const repo: ClientRepository = new CollectionClient()
+
   const [visible, setVisible] = useState<'table' | 'form'>('table')
+  const [clients, setClients] = useState<Cliente[]>([])
   const [client, setClient] = useState<Cliente>(Cliente.empty())
 
-  const clients = [
-    new Cliente('Ana', 34, '1'),
-    new Cliente('Bia', 35, '2'),
-    new Cliente('Carlos', 40, '3'),
-    new Cliente('Daniel', 30, '4'),
-  ]
+  useEffect(getAll, [])
+
+  function getAll(){
+    repo.getAll().then(clients =>{
+      setClients(clients)
+      setVisible('table')
+    })
+  }
 
   function clientSelected(client: Cliente) {
     setClient(client)
     setVisible('form')
   }
 
-  function clientDeleted(client: Cliente) {
-    console.log(client.name);
+  async function clientDeleted(client: Cliente) {
+    await repo.delete(client)
+    getAll()
 
   }
 
-  function newClient(){
+  function newClient() {
     setClient(Cliente.empty())
     setVisible('form')
-    
+
   }
 
-  function saveClient( client: Cliente){
-    console.log(client);
-    setVisible('table')
-    
+  async function saveClient(client: Cliente) {
+    await repo.save(client)
+    getAll()
+
   }
 
 
@@ -62,9 +70,9 @@ export default function Home() {
               clientDeleted={clientDeleted} />
           </>
         ) : (
-          <Form cliente={client} 
-          clientChange={saveClient}
-          canceled={() => setVisible('table')}/>
+          <Form cliente={client}
+            clientChange={saveClient}
+            canceled={() => setVisible('table')} />
         )}
 
       </Layout>
