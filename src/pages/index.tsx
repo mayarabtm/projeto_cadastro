@@ -1,55 +1,21 @@
-import { useEffect, useState } from 'react';
-import CollectionClient from '../backend/db/CollectionClient';
 import Button from '../components/Button';
 import Form from '../components/Form';
 import Layout from '../components/Layout'
 import Table from '../components/Table'
-import Cliente from '../core/Cliente'
-import ClientRepository from '../core/ClientRepository';
+import useClient from '../hooks/useClients';
 
 export default function Home() {
 
-  const repo: ClientRepository = new CollectionClient()
-
-  const [visible, setVisible] = useState<'table' | 'form'>('table')
-  const [clients, setClients] = useState<Cliente[]>([])
-  const [client, setClient] = useState<Cliente>(Cliente.empty())
-
-  useEffect(getAll, [])
-
-  function getAll(){
-    repo.getAll().then(clients =>{
-      setClients(clients)
-      setVisible('table')
-    })
-  }
-
-  function clientSelected(client: Cliente) {
-    setClient(client)
-    setVisible('form')
-  }
-
-  async function clientDeleted(client: Cliente) {
-    await repo.delete(client)
-    getAll()
-
-  }
-
-  function newClient() {
-    setClient(Cliente.empty())
-    setVisible('form')
-
-  }
-
-  async function saveClient(client: Cliente) {
-    await repo.save(client)
-    getAll()
-
-  }
-
-
-
-
+  const { 
+    client, 
+    clients, 
+    saveClient,
+    newClient, 
+    clientSelected, 
+    clientDeleted,
+    tableVisible,
+    showTable
+  } = useClient()
 
   return (
     <div className={`
@@ -58,7 +24,7 @@ export default function Home() {
     text-white`}>
 
       <Layout title="Cadastro de Tarefas">
-        {visible === 'table' ? (
+        {tableVisible ? (
           <>
             <div className="flex justify-end">
               <Button color="green" className="mb-4"
@@ -72,7 +38,7 @@ export default function Home() {
         ) : (
           <Form cliente={client}
             clientChange={saveClient}
-            canceled={() => setVisible('table')} />
+            canceled={showTable} />
         )}
 
       </Layout>
